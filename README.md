@@ -23,3 +23,7 @@ A simple REST API developed using Java and Spring Boot.
 
 ## Build Command
 ./mvnw clean package
+
+## Continuous Integration
+
+Automated testing and application building are implemented using Jenkins.
