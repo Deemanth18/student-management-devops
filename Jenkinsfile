@@ -21,7 +21,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building Student Management Application'
-                bat 'mvnw.cmd -B clean package -DskipTests'
+                bat 'mvnw.cmd -B package -DskipTests'
             }
         }
 
