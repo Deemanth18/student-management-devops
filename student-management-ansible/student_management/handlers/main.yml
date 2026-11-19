@@ -1,0 +1,6 @@
+---
+- name: Restart Student Management
+  systemd:
+    name: "{{ app_name }}"
+    state: restarted
+    daemon_reload: yes

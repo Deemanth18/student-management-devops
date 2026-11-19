@@ -1,0 +1,7 @@
+---
+- name: Deploy Student Management Application
+  hosts: student_server
+  become: yes
+
+  roles:
+    - student_management

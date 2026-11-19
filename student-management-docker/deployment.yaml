@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: student-management
+
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: student-management
+
+  template:
+    metadata:
+      labels:
+        app: student-management
+
+    spec:
+      containers:
+        - name: student-management
+          image: student-management:1.0
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 8080
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 10
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 5

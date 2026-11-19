@@ -1,0 +1,44 @@
+---
+- name: Install Java runtime
+  apt:
+    name: openjdk-21-jre-headless
+    state: present
+    update_cache: yes
+
+- name: Create application directory
+  file:
+    path: "{{ app_directory }}"
+    state: directory
+    mode: '0755'
+
+- name: Copy Student Management JAR
+  copy:
+    src: "{{ app_jar }}"
+    dest: "{{ app_directory }}/{{ app_jar }}"
+    mode: '0644'
+  notify: Restart Student Management
+
+- name: Create Student Management systemd service
+  copy:
+    dest: /etc/systemd/system/{{ app_name }}.service
+    content: |
+      [Unit]
+      Description=Student Management REST API
+      After=network.target
+
+      [Service]
+      User=root
+      WorkingDirectory={{ app_directory }}
+      ExecStart=/usr/bin/java -jar {{ app_directory }}/{{ app_jar }} --server.port={{ app_port }}
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+  notify: Restart Student Management
+
+- name: Enable and start Student Management service
+  systemd:
+    name: "{{ app_name }}"
+    enabled: yes
+    state: started
+    daemon_reload: yes
